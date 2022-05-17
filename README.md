@@ -1,3 +1,3 @@
 # Instaclone-native
 
-React Native
+Using React Native & Expo
