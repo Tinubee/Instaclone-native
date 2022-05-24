@@ -1,6 +1,8 @@
 import { gql, useQuery } from "@apollo/client";
-import React, { useState } from "react";
+import React from "react";
+import { useState } from "react";
 import { ActivityIndicator, FlatList, Text, View } from "react-native";
+import { RefreshControl } from "react-native";
 import Photo from "../components/Photo";
 import ScreenLayout from "../components/ScreenLayout";
 import { COMMENT_FRAGMENT, PHOTO_FRAGMENT } from "../fragments";
@@ -10,6 +12,7 @@ export const FEED_QUERY = gql`
     seeFeed(offset: $offset) {
       ...PhotoFragment
       user {
+        id
         username
         avatar
       }
@@ -38,7 +41,6 @@ export default function Feed() {
     setRefreshing(false);
   };
   const [refreshing, setRefreshing] = useState(false);
-
   return (
     <ScreenLayout loading={loading}>
       <FlatList
@@ -51,7 +53,7 @@ export default function Feed() {
           })
         }
         refreshing={refreshing}
-        onRefresh={refresh}
+        onRefresh={refetch}
         style={{ width: "100%" }}
         showsVerticalScrollIndicator={false}
         data={data?.seeFeed}

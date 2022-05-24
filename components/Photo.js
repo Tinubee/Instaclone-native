@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components/native";
 import PropTypes from "prop-types";
-import { useWindowDimensions, Image } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import styled from "styled-components/native";
+import { Image, useWindowDimensions } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import { gql, useMutation } from "@apollo/client";
 
 const TOGGLE_LIKE_MUTATION = gql`
@@ -22,7 +22,7 @@ const Header = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
 `;
-const UserAvartar = styled.Image`
+const UserAvatar = styled.Image`
   margin-right: 10px;
   width: 25px;
   height: 25px;
@@ -48,24 +48,22 @@ const CaptionText = styled.Text`
   margin-left: 5px;
 `;
 const Likes = styled.Text`
-  margin: 7px 0px;
   color: white;
+  margin: 7px 0px;
   font-weight: 600;
 `;
-
 const ExtraContainer = styled.View`
   padding: 10px;
 `;
 function Photo({ id, user, caption, file, isLiked, likes }) {
   const navigation = useNavigation();
   const { width, height } = useWindowDimensions();
-  const [imageHeight, setImageHeight] = React.useState(height - 450);
+  const [imageHeight, setImageHeight] = useState(height - 450);
   useEffect(() => {
     Image.getSize(file, (width, height) => {
       setImageHeight(height / 3);
     });
   }, [file]);
-
   const updateToggleLike = (cache, result) => {
     const {
       data: {
@@ -97,15 +95,25 @@ function Photo({ id, user, caption, file, isLiked, likes }) {
     update: updateToggleLike,
   });
 
+  const goToProfile = () => {
+    navigation.navigate("Profile", {
+      username: user.username,
+      id: user.id,
+    });
+  };
+
   return (
     <Container>
-      <Header onPress={() => navigation.navigate("Profile")}>
-        <UserAvartar resizeMode="cover" source={{ uri: user.avatar }} />
+      <Header onPress={goToProfile}>
+        <UserAvatar resizeMode="cover" source={{ uri: user.avatar }} />
         <Username>{user.username}</Username>
       </Header>
       <File
         resizeMode="cover"
-        style={{ width, height: imageHeight }}
+        style={{
+          width,
+          height: imageHeight,
+        }}
         source={{ uri: file }}
       />
       <ExtraContainer>
@@ -121,11 +129,17 @@ function Photo({ id, user, caption, file, isLiked, likes }) {
             <Ionicons name="chatbubble-outline" color="white" size={22} />
           </Action>
         </Actions>
-        <TouchableOpacity onPress={() => navigation.navigate("Likes")}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("Likes", {
+              photoId: id,
+            })
+          }
+        >
           <Likes>{likes === 1 ? "1 like" : `${likes} likes`}</Likes>
         </TouchableOpacity>
         <Caption>
-          <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+          <TouchableOpacity onPress={goToProfile}>
             <Username>{user.username}</Username>
           </TouchableOpacity>
           <CaptionText>{caption}</CaptionText>
@@ -134,7 +148,6 @@ function Photo({ id, user, caption, file, isLiked, likes }) {
     </Container>
   );
 }
-
 Photo.propTypes = {
   id: PropTypes.number.isRequired,
   user: PropTypes.shape({

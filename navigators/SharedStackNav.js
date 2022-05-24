@@ -1,5 +1,4 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import React from "react";
 import Feed from "../screens/Feed";
 import MyProfile from "../screens/MyProfile";
 import Photo from "../screens/Photo";
@@ -9,6 +8,7 @@ import Notification from "../screens/Notifications";
 import { Image } from "react-native";
 import Likes from "../screens/Likes";
 import Comments from "../screens/Comments";
+import React, { useEffect, useState } from "react";
 
 const Stack = createStackNavigator();
 
