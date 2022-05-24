@@ -15,9 +15,9 @@ const Stack = createStackNavigator();
 export default function StackNavFactory({ screenName }) {
   return (
     <Stack.Navigator
-      headerMode="screen"
       screenOptions={{
         headerBackTitleVisible: false,
+        headerMode: "screen",
         headerTintColor: "white",
         headerStyle: {
           shadowColor: "rgba(255,255,255,0.5)",
