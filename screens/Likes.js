@@ -35,7 +35,7 @@ export default function Likes({ route }) {
           <View
             style={{
               width: "100%",
-              height: 2,
+              height: 1,
               backgroundColor: "rgba(255,255,255,0.2)",
             }}
           ></View>

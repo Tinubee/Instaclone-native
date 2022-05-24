@@ -34,16 +34,10 @@ export default function App() {
       isLoggedInVar(true);
       tokenVar(token);
     }
-    const persistor = new CachePersistor({
+    await persistCache({
       cache,
       storage: new AsyncStorageWrapper(AsyncStorage),
     });
-    await persistor.restore();
-
-    // await persistCache({
-    //   cache,
-    //   storage: new AsyncStorageWrapper(AsyncStorage),
-    // });
     return preloadAssets();
   };
   if (loading) {
