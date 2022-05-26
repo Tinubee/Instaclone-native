@@ -14,7 +14,6 @@ import {
   CachePersistor,
   persistCache,
 } from "apollo3-cache-persist";
-import * as SplashScreen from "expo-splash-screen";
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -34,10 +33,7 @@ export default function App() {
       isLoggedInVar(true);
       tokenVar(token);
     }
-    await persistCache({
-      cache,
-      storage: new AsyncStorageWrapper(AsyncStorage),
-    });
+
     return preloadAssets();
   };
   if (loading) {
