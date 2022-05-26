@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { colors } from "../colors";
 import { useFocusEffect } from "@react-navigation/native";
+import { StatusBar } from "react-native";
 
 const Container = styled.View`
   flex: 1;
@@ -63,7 +64,13 @@ export default function SelectPhoto({ navigation }) {
     getPermission();
   }, []);
   const HeaderRight = () => (
-    <TouchableOpacity>
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate("UploadForm", {
+          file: chosenPhoto,
+        })
+      }
+    >
       <HeaderRightText>Next</HeaderRightText>
     </TouchableOpacity>
   );
@@ -71,7 +78,7 @@ export default function SelectPhoto({ navigation }) {
     navigation.setOptions({
       headerRight: HeaderRight,
     });
-  }, []);
+  }, [chosenPhoto]);
 
   const numColumns = 4;
   const { width } = useWindowDimensions();
@@ -96,6 +103,7 @@ export default function SelectPhoto({ navigation }) {
 
   return (
     <Container>
+      <StatusBar hidden={false} />
       <Top>
         {chosenPhoto !== "" ? (
           <Image
