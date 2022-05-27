@@ -53,7 +53,7 @@ export default function Feed() {
           })
         }
         refreshing={refreshing}
-        onRefresh={refetch}
+        onRefresh={refresh}
         style={{ width: "100%" }}
         showsVerticalScrollIndicator={false}
         data={data?.seeFeed}
