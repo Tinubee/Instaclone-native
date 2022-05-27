@@ -42,7 +42,7 @@ export const FEED_PHOTO = gql`
       avatar
     }
     caption
-    createdAt
+    createAt
     isMine
   }
   ${PHOTO_FRAGMENT}

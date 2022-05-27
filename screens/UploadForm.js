@@ -41,8 +41,27 @@ const HeaderRightText = styled.Text`
   margin-right: 7px;
 `;
 export default function UploadForm({ route, navigation }) {
+  const updateUploadPhoto = (cache, result) => {
+    const {
+      data: { uploadPhoto },
+    } = result;
+    if (uploadPhoto.id) {
+      cache.modify({
+        id: "ROOT_QUERY",
+        fields: {
+          seeFeed(prev) {
+            return [uploadPhoto, ...prev];
+          },
+        },
+      });
+      navigation.navigate("Tabs");
+    }
+  };
   const [uploadPhotoMutation, { loading, error }] = useMutation(
-    UPLOAD_PHOTO_MUTATION
+    UPLOAD_PHOTO_MUTATION,
+    {
+      update: updateUploadPhoto,
+    }
   );
   const HeaderRight = () => (
     <TouchableOpacity onPress={handleSubmit(onValid)}>
@@ -56,30 +75,31 @@ export default function UploadForm({ route, navigation }) {
   useEffect(() => {
     register("caption");
   }, [register]);
+
   useEffect(() => {
     navigation.setOptions({
       headerRight: loading ? HeaderRightLoading : HeaderRight,
       ...(loading && { headerLeft: () => null }),
     });
   }, [loading]);
+
   const onValid = ({ caption }) => {
     const file = new ReactNativeFile({
-      uri: route.params.file,
+      uri: route.params.photoLocal,
       name: `1.jpg`,
       type: "image/jpeg",
     });
     uploadPhotoMutation({
       variables: {
-        caption,
         file,
+        caption,
       },
     });
   };
-
   return (
     <DismissKeyboard>
       <Container>
-        <Photo resizeMode="contain" source={{ uri: route.params.file }} />
+        <Photo resizeMode="contain" source={{ uri: route.params.photoLocal }} />
         <CaptionContainer>
           <Caption
             placeholder="Write a caption..."
