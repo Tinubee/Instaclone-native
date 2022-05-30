@@ -17,15 +17,24 @@ export const tokenVar = makeVar("");
 const TOKEN = "token";
 
 export const logUserIn = async (token) => {
-  await AsyncStorage.setItem(TOKEN, token);
-  isLoggedInVar(true);
-  tokenVar(token);
+  try {
+    await AsyncStorage.setItem(TOKEN, token);
+    isLoggedInVar(true);
+    tokenVar(token);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const logUserOut = async () => {
-  await AsyncStorage.removeItem(TOKEN);
-  isLoggedInVar(false);
-  tokenVar(null);
+  try {
+    await AsyncStorage.removeItem(TOKEN);
+    client.clearStore();
+    isLoggedInVar(false);
+    tokenVar(null);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const httpLink = createHttpLink({

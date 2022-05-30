@@ -7,7 +7,7 @@ import Photo from "../components/Photo";
 import ScreenLayout from "../components/ScreenLayout";
 import { COMMENT_FRAGMENT, PHOTO_FRAGMENT } from "../fragments";
 import { Ionicons } from "@expo/vector-icons";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { TouchableOpacity } from "react-native";
 
 export const FEED_QUERY = gql`
   query seeFeed($offset: Int!) {
