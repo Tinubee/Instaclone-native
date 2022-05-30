@@ -6,11 +6,12 @@ import { Asset } from "expo-asset";
 import LoggedOutNav from "./navigators/LoggedOutNav";
 import { NavigationContainer } from "@react-navigation/native";
 import { ApolloProvider, useReactiveVar } from "@apollo/client";
-import { client, isLoggedInVar, tokenVar } from "./apollo";
+import { client, isLoggedInVar, tokenVar, cache } from "./apollo";
 import LoggedInNav from "./navigators/LoggedInNav";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AsyncStorageWrapper, CachePersistor } from "apollo3-cache-persist";
 import * as SplashScreen from "expo-splash-screen";
+import { View } from "react-native";
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -26,22 +27,29 @@ export default function App() {
   };
 
   useEffect(() => {
-    const preLoad = async () => {
+    const preload = async () => {
       const token = await AsyncStorage.getItem("token");
+      const cachePersistor = new CachePersistor({
+        cache,
+        storage: new AsyncStorageWrapper(AsyncStorage),
+      });
+
       if (token) {
         isLoggedInVar(true);
         tokenVar(token);
       }
+
       try {
         await SplashScreen.preventAutoHideAsync();
         preloadAssets();
+        await cachePersistor.restore();
       } catch (err) {
         console.error(err);
       } finally {
         setLoading(true);
       }
     };
-    preLoad();
+    preload();
   }, []);
 
   const onLayoutRootView = useCallback(async () => {
@@ -49,16 +57,17 @@ export default function App() {
       await SplashScreen.hideAsync();
     }
   }, [loading]);
-
   if (!loading) {
     return null;
   }
 
   return (
-    <ApolloProvider client={client}>
-      <NavigationContainer>
-        {isLoggedIn ? <LoggedInNav /> : <LoggedOutNav />}
-      </NavigationContainer>
-    </ApolloProvider>
+    <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+      <ApolloProvider client={client}>
+        <NavigationContainer>
+          {isLoggedIn ? <LoggedInNav /> : <LoggedOutNav />}
+        </NavigationContainer>
+      </ApolloProvider>
+    </View>
   );
 }
