@@ -8,6 +8,7 @@ import Notification from "../screens/Notifications";
 import { Image } from "react-native";
 import Likes from "../screens/Likes";
 import Comments from "../screens/Comments";
+import EditProfile from "../screens/EditProfile";
 import React, { useEffect, useState } from "react";
 
 const Stack = createStackNavigator();
@@ -56,6 +57,7 @@ export default function StackNavFactory({ screenName }) {
       <Stack.Screen name="Photo" component={Photo} />
       <Stack.Screen name="Likes" component={Likes} />
       <Stack.Screen name="Comments" component={Comments} />
+      <Stack.Screen name="EditProfile" component={EditProfile} />
     </Stack.Navigator>
   );
 }
