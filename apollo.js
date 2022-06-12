@@ -44,6 +44,8 @@ const httpLink = createHttpLink({
   uri: "https://purple-corners-cough-123-212-52-42.loca.lt/graphql",
 });
 
+//https://tinubee-instagram-backend.herokuapp.com/graphql
+
 const uploadHttpLink = createUploadLink({
   uri: "http://localhost:4000/graphql",
 });

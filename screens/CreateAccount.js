@@ -123,8 +123,6 @@ export default function CreateAccount({ navigation }) {
         loading
         onPress={handleSubmit(onValid)}
       />
-      <AuthButton text={"sign github"} />
-      <AuthButton text={"sign kakaotalk"} />
     </AuthLayout>
   );
 }
