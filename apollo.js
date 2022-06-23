@@ -47,7 +47,7 @@ const httpLink = createHttpLink({
 //https://tinubee-instagram-backend.herokuapp.com/graphql
 
 const uploadHttpLink = createUploadLink({
-  uri: "http://localhost:4000/graphql",
+  uri: "https://tinubee-instagram-backend.herokuapp.com/graphql",
 });
 
 const wsLink = new WebSocketLink({
