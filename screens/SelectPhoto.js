@@ -5,6 +5,7 @@ import styled from "styled-components/native";
 import {
   FlatList,
   Image,
+  Platform,
   TouchableOpacity,
   useWindowDimensions,
 } from "react-native";
@@ -50,13 +51,16 @@ export default function SelectPhoto({ navigation }) {
   const getPermission = async () => {
     const { accessPrivileges, canAskAgain } =
       await MediaLibrary.getPermissionsAsync();
-    if (accessPrivileges === "none" && canAskAgain) {
+
+    const stats = Platform.OS == "ios" ? "none" : "undetermined";
+
+    if (accessPrivileges === stats && canAskAgain) {
       const { accessPrivileges } = await MediaLibrary.requestPermissionsAsync();
-      if (accessPrivileges !== "none") {
+      if (accessPrivileges !== stats) {
         setOk(true);
         getPhotos();
       }
-    } else if (accessPrivileges !== "none") {
+    } else if (accessPrivileges !== stats) {
       setOk(true);
       getPhotos();
     }
