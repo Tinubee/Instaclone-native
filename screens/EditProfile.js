@@ -12,7 +12,12 @@ const Avatar = styled.Image`
   border-radius: 45px;
   margin-bottom: 30px;
 `;
-
+const DefaultAvatar = styled.Image`
+  width: 90px;
+  height: 90px;
+  border-radius: 45px;
+  margin-bottom: 30px;
+`;
 const TextInput = styled.TextInput`
   width: 90%;
   color: white;
